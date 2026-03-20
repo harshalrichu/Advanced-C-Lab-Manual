@@ -9,12 +9,57 @@ Algorithm:
 4.	Call the search function and perform other linked list operations as needed.
  
 Program:
+```
 
-//type your code here
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+void search(struct Node* head, int key) {
+    int pos = 1;
+    while (head != NULL) {
+        if (head->data == key) {
+            printf("Element found at position %d\n", pos);
+            return;
+        }
+        head = head->next;
+        pos++;
+    }
+    printf("Element not found\n");
+}
+
+int main() {
+    struct Node *head = NULL, *temp;
+
+    // creating list: 10 -> 20 -> 30
+    head = (struct Node*)malloc(sizeof(struct Node));
+    head->data = 10;
+
+    head->next = (struct Node*)malloc(sizeof(struct Node));
+    head->next->data = 20;
+
+    head->next->next = (struct Node*)malloc(sizeof(struct Node));
+    head->next->next->data = 30;
+    head->next->next->next = NULL;
+
+    int key;
+    printf("Enter element to search: ");
+    scanf("%d", &key);
+
+    search(head, key);
+
+    return 0;
+}
+```
 
 Output:
 
-//paste your output here
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/f15c7c97-3c79-44e7-8d8c-0e27b647f93b" />
+
 
 
 
@@ -34,11 +79,56 @@ Algorithm:
  
 Program:
 
-//type your code here
+```
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* insert(struct Node* head, int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if (head == NULL)
+        return newNode;
+
+    struct Node* temp = head;
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->next = newNode;
+    return head;
+}
+
+void display(struct Node* head) {
+    while (head != NULL) {
+        printf("%d -> ", head->data);
+        head = head->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    struct Node* head = NULL;
+
+    head = insert(head, 10);
+    head = insert(head, 20);
+    head = insert(head, 30);
+
+    display(head);
+
+    return 0;
+}
+```
 
 Output:
 
-//paste your output here
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/d6f09172-6e4b-4584-bc8f-17cf690b86ca" />
+
 
  
 Result:
@@ -57,12 +147,51 @@ Algorithm:
 4.	Move to the next node by updating the temp pointer to point to the next node (temp = temp->next).
  
 Program:
+```
+#include <stdio.h>
+#include <stdlib.h>
 
-//type your code here
+struct Node {
+    int data;
+    struct Node* prev;
+    struct Node* next;
+};
+
+int main() {
+    struct Node *head, *second, *third;
+
+    head = (struct Node*)malloc(sizeof(struct Node));
+    second = (struct Node*)malloc(sizeof(struct Node));
+    third = (struct Node*)malloc(sizeof(struct Node));
+
+    head->data = 10;
+    head->prev = NULL;
+    head->next = second;
+
+    second->data = 20;
+    second->prev = head;
+    second->next = third;
+
+    third->data = 30;
+    third->prev = second;
+    third->next = NULL;
+
+    struct Node* temp = head;
+
+    printf("Doubly Linked List:\n");
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+
+    return 0;
+}
+```
+
 
 Output:
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/21c4d25b-92ae-4e4a-a273-bdd21a05aaf0" />
 
-//paste your output here
 
 
 Result:
@@ -83,11 +212,60 @@ Algorithm:
  
 Program:
 
-//type your code here
+```
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* prev;
+    struct Node* next;
+};
+
+struct Node* insert(struct Node* head, int value) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->data = value;
+    newNode->next = NULL;
+
+    if (head == NULL) {
+        newNode->prev = NULL;
+        return newNode;
+    }
+
+    struct Node* temp = head;
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->next = newNode;
+    newNode->prev = temp;
+
+    return head;
+}
+
+void display(struct Node* head) {
+    while (head != NULL) {
+        printf("%d ", head->data);
+        head = head->next;
+    }
+}
+
+int main() {
+    struct Node* head = NULL;
+
+    head = insert(head, 10);
+    head = insert(head, 20);
+    head = insert(head, 30);
+
+    display(head);
+
+    return 0;
+}
+```
 
 Output:
 
-//paste your output here
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/ada0d5e3-651b-4a80-bd82-56095394620c" />
+
 
 
 Result:
@@ -125,11 +303,74 @@ o	If the element is not found in any node, print a message indicating the elemen
 
 Program:
 
-//type your code here
+```
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Node* delete(struct Node* head, int key) {
+    struct Node *temp = head, *prev = NULL;
+
+    if (temp != NULL && temp->data == key) {
+        head = temp->next;
+        free(temp);
+        return head;
+    }
+
+    while (temp != NULL && temp->data != key) {
+        prev = temp;
+        temp = temp->next;
+    }
+
+    if (temp == NULL) {
+        printf("Element not found\n");
+        return head;
+    }
+
+    prev->next = temp->next;
+    free(temp);
+
+    return head;
+}
+
+void display(struct Node* head) {
+    while (head != NULL) {
+        printf("%d -> ", head->data);
+        head = head->next;
+    }
+    printf("NULL\n");
+}
+
+int main() {
+    struct Node* head = NULL;
+
+    // create list
+    head = (struct Node*)malloc(sizeof(struct Node));
+    head->data = 10;
+
+    head->next = (struct Node*)malloc(sizeof(struct Node));
+    head->next->data = 20;
+
+    head->next->next = (struct Node*)malloc(sizeof(struct Node));
+    head->next->next->data = 30;
+    head->next->next->next = NULL;
+
+    head = delete(head, 20);
+
+    display(head);
+
+    return 0;
+}
+```
 
 Output:
 
-//paste your output here
+<img width="1920" height="1020" alt="image" src="https://github.com/user-attachments/assets/8a633e88-99a3-4946-87cf-321bdaca4e20" />
+
 
 
 
